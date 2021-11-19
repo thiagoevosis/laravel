@@ -3,7 +3,7 @@
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoria-create">
         Adicionar Categoria
     </button>
-    @include('categoria.create')
+
     @include('categoria.editar')
     @if (session()->has('message'))
         <div class="alert alert-success" style="margin-top:30px;">x

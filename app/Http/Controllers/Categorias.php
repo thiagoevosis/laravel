@@ -47,7 +47,8 @@ class Categorias extends Controller
     if($categorias->save() == true){
     toast('Categoria Adicionada com Sucesso!','success');
     
-    return redirect()->back();
+    return redirect()->route('categorias.index');
+
 
     
     }else{

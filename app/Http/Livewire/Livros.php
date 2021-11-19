@@ -29,15 +29,10 @@ class Livros extends Component
     protected $listeners = ['refreshComponent' => '$refresh'];
 
 
-/*     public function render()
+    public function render()
     {
         return view('livewire.livros');
     }
- */
-public function render()
-  {
-    return view('livewire.livros');
-  }
 
 
     public function mount()
@@ -191,6 +186,7 @@ public function render()
             $this->livros = ModelLivros::all();
         }
     }
+
 
 
 }
