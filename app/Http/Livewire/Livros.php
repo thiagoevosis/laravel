@@ -37,7 +37,7 @@ class Livros extends Component
 
     public function mount()
     {
-       
+        $this->livros = ModelLivros::all();
         
      /*    $this->livro = ModelLivros::when(!empty($this->selectCategoria) ,function($query){
           dd($this->selectCategoria);
@@ -70,10 +70,10 @@ class Livros extends Component
         $this->descricao = $livro->descricao;
         $this->imagembanco = $livro->imagem;
         $this->id_categoria = $livro->id_categoria;
-
         $this->updateMode = true;
         
     }
+    
     public function cancel()
     {
         $this->updateMode = false;
@@ -84,9 +84,6 @@ class Livros extends Component
 
     public function update($id)
     {
-       
-
-
         $validatedDate = $this->validate([
             'titulo' => 'required',
             'autor' => 'required',
@@ -132,58 +129,41 @@ class Livros extends Component
             $this->emit('refreshComponent');
         }
     }
-    public function delete($id)
+    public function delete(int $id): void
     {
         if($id){
             ModelLivros::where('id',$id)->delete();
 
             $this->alert('success', 'Livro Atualizado com Sucesso!');
             
-            $this->refresh();
-          
-          
+            $this->refresh();          
         }
+
     }
     public function refresh()
     {
         $this->emit('refreshComponent');
     } 
 
-    public function updatedSelectFormato()
-    {
-
-             if(!empty($this->selectFormato)){
-  
-            $this->livros = ModelLivros::where('tipo','like', '%' .$this->selectFormato.'%')->get();
-    
-            }else{
-                $this->livros = ModelLivros::all();
-            }
-    } 
-    public function updatedSelectCategoria()
-    {
-    
-        if(!empty($this->selectCategoria)){
-  
-        $this->livros = ModelLivros::where('id_categoria',$this->selectCategoria)->get();
-
-
-        }else{
-            $this->livros = ModelLivros::all();
-        }
-    }
 
     public function updatedProcurar()
     {
 
-        if(!empty($this->procurar)){
+      
+        $this->livros = ModelLivros::when(!empty($this->procurar) ,function($query){
 
-            $this->livros = ModelLivros::where('titulo','like', '%' .$this->procurar.'%')->
-            where('id_categoria','like', '%' .$this->selectCategoria.'%')->get();
-       
-        }else{
-            $this->livros = ModelLivros::all();
-        }
+          return $query->where('titulo','like', '%' .$this->procurar.'%')
+          ->when(!empty($this->selectFormato) ,function($query){
+
+          return $query->where('tipo','like', '%' .$this->selectFormato.'%')
+          ->when(!empty($this->selectCategoria) ,function($query){
+
+         return $query->where('id_categoria',$this->selectCategoria);
+        });
+        });
+        })->get();
+  
+
     }
 
 
