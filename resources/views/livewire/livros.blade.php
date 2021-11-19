@@ -61,24 +61,29 @@
                         </thead>
                         <tbody>
                 
-                      
-                            @foreach($livros as $value)
-                            <tr>
-                                <td>{{ $value->id }}</td>
-                                <td>{{ $value->titulo }}</td>
-                                <td>{{ $value->autor }}</td>
-                                <td>{{ $value->editora }}</td>
-                                <td>{{ $value->Categoria->categoria }}</td>
-                                <td>{{ $value->ano }}</td>
-                                <td>{{$value->tipo}}</td>                                
-                                <td>
-                                <button data-toggle="modal" data-target="#updateModal" wire:click="edit({{ $value->id }})" class="btn btn-primary btn-sm">Editar</button>
-                                </td>
-                                <td>
-                                    <button wire:click="delete({{ $value->id }})" class="btn btn-danger btn-sm">Delete</button>
-                                </td>
-                            </tr>
-                            @endforeach
+              
+                      @forelse ($livros as $value )
+                      <tr>
+                        <td>{{ $value->id }}</td>
+                        <td>{{ $value->titulo }}</td>
+                        <td>{{ $value->autor }}</td>
+                        <td>{{ $value->editora }}</td>
+                        <td>{{ $value->Categoria->categoria }}</td>
+                        <td>{{ $value->ano }}</td>
+                        <td>{{$value->tipo}}</td>                                
+                        <td>
+                        <button data-toggle="modal" data-target="#updateModal" wire:click="edit({{ $value->id }})" class="btn btn-primary btn-sm">Editar</button>
+                        </td>
+                        <td>
+                            <button wire:click="delete({{ $value->id }})" class="btn btn-danger btn-sm">Delete</button>
+                        </td>
+                    </tr>
+                      @empty
+                      <tr>
+                        <td> Livros não encontrados </td>
+                    </tr>
+                      @endforelse
+                 
                         </tbody>
                     </table>
             </div>

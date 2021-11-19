@@ -7,16 +7,30 @@ use App\Models\Livros;
 use App\Models\LivrosCategorias;
 use Illuminate\Facades\File;
 use Illuminate\Http\Request;
-
+Use App\Services\Book\BookService;
+use PhpParser\Node\Stmt\TryCatch;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Exceptions\BookCreateException;
+
 class LivrosController extends Controller
 {
+
+    private $bookService;
+
+    public function __construct(BookService $bookService)
+    {
+
+        $this->bookService = $bookService;
+
+    }
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+ 
+
     public function index()
     {
       
@@ -46,38 +60,21 @@ class LivrosController extends Controller
      */
     public function store(LivrosRequest $request)
     {
-        $livro = new Livros();
-        $livro->titulo = $request->titulo;
-        $livro->autor = $request->autor;
-        $livro->tipo = $request->tipo;
-        $livro->editora = $request->editora;
-        $livro->ano = $request->ano;
-        $livro->paginas = $request->paginas;
-        $livro->descricao = $request->descricao;
-        $livro->id_categoria = $request->id_categoria;
-      
-     
-         if(!empty($request->imagem)){
-            $extensao = $request->imagem->extension();
-            $name = uniqid(date('H'));
-            $nomeImagem = "{$name}.{$extensao}";
-         $request->imagem->storeAs('photos', $nomeImagem);
-         $livro->imagem =$nomeImagem;
-    }
-     
-         if(  $livro->save() == true)
-        {
-        
-            toast('Livro cadastrado com Sucesso','success');
-            return redirect()->route('livros.index');
-   
-        
+        try{
+
+          $this->bookService->create($request);
+
+           toast('Livro cadastrado com Sucesso','success');
+           return redirect()->route('livros.index');
+            
+        }catch(BookCreateException $e){
+
+            toast($e->getMessage(),'error');
+            return redirect()
+                ->back()
+                ->withInput();
         }
-        else
-        {
-            toast('Erro ao Cadastrar','error');
-            return redirect()->route('livros.create');
-        }
+ 
     }
 
     /**

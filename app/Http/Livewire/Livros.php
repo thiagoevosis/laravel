@@ -16,7 +16,7 @@ class Livros extends Component
     use LivewireAlert;
     use WithFileUploads;
 
-    public $livros;
+    public $livros = [];
     public  $categorias , $categoria, $titulo, $autor, $editora, $ano, $edicao,  $paginas, $descricao, $categoria_id ,$imagem ,$imagembanco;
     public $updateMode = false;
     public $id_livro;
@@ -36,19 +36,18 @@ class Livros extends Component
 
 
     public function mount()
-  
     {
+       
+        
+     /*    $this->livro = ModelLivros::when(!empty($this->selectCategoria) ,function($query){
+          dd($this->selectCategoria);
+            // return $query->where('categoria_id',$this->selectCategoria);
+        })->get();
 
- 
-     if(!empty($this->selectCategoria)){
-        $this->livros = ModelLivros::where('categoria_id',$this->selectCategoria)->get();
-     }else{
-        $this->livros = ModelLivros::all();
-     }
-     $this->categorias = LivrosCategorias::all(); 
-   
+  */
+
+        $this->categorias = LivrosCategorias::all(); 
    }
-
 
     private function resetInputFields(){
         $this->categoria = '';
