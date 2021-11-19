@@ -39,9 +39,10 @@
                      <span aria-hidden="true close-btn">×</span>
                 </button>
             </div>
-           <div class="modal-body">
             <form  class="form-control" action="{{route('categorias.store')}}" method="post" enctype="multipart/form-data">
                 @csrf
+           <div class="modal-body">
+           
 
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Nome da Categoria</label>

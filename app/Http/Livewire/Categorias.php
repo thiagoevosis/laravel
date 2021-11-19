@@ -93,7 +93,7 @@ class Categorias extends Component
     
             $this->dispatchBrowserEvent('categoriaStore');
             $this->refresh();
-        }else{
+              }else{
             $this->alert('error', ' Existem livros relacionados a essa categoria!');
         }
 
