@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Livewire;
-
+use App\Models\Livros as ModelLivros;
 use Livewire\Component;
 use App\Models\LivrosCategorias;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -82,14 +82,24 @@ class Categorias extends Component
     {
             if(!empty($id)){
 
+                $livro = ModelLivros::where('id_categoria', $id)->count();
+               
+
+            if($livro == 0){
+             
             LivrosCategorias::where('id',$id)->delete();
       
             $this->alert('success', 'Categoria deletada com Sucesso!');
     
             $this->dispatchBrowserEvent('categoriaStore');
             $this->refresh();
+        }else{
+            $this->alert('error', ' Existem livros relacionados a essa categoria!');
+        }
+
         }
     }
+
     public function refresh()
     {
         $this->emit('refreshComponent');
